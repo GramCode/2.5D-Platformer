@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
 
     private float _yVelocity;
     private bool _doubleJump = false;
+    private int _coins;
 
     private CharacterController _controller;
 
@@ -32,7 +33,6 @@ public class Player : MonoBehaviour
 
         if (_controller.isGrounded)
         {
-            //_doubleJump = false;
             //Jump
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -58,5 +58,11 @@ public class Player : MonoBehaviour
         velocity.y = _yVelocity;
 
         _controller.Move(velocity * Time.deltaTime);
+    }
+
+    public void AddCoin()
+    {
+        _coins++;
+        UIManager.Instance.UpdateCoinsText(_coins);
     }
 }
