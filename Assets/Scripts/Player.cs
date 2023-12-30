@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class Player : MonoBehaviour
     private float _yVelocity;
     private bool _doubleJump = false;
     private int _coins;
+    private int _lives = 3;
 
     private CharacterController _controller;
 
@@ -23,9 +25,16 @@ public class Player : MonoBehaviour
 
         if (_controller == null)
             Debug.LogError("Character Controller in Player is NULL");
+
+        UIManager.Instance.UpdateLivesText(_lives);
     }
 
     void Update()
+    {
+        Movement();
+    }
+
+    private void Movement()
     {
         float horizontal = Input.GetAxis("Horizontal");
         Vector3 direction = new Vector3(horizontal, 0, 0);
@@ -49,7 +58,7 @@ public class Player : MonoBehaviour
                     _yVelocity += _jumpHeight;
                     _doubleJump = false;
                 }
-                
+
             }
             //Apply Gravity
             _yVelocity -= _gravity;
@@ -64,5 +73,22 @@ public class Player : MonoBehaviour
     {
         _coins++;
         UIManager.Instance.UpdateCoinsText(_coins);
+    }
+
+    public void Damage()
+    {
+
+        _lives--;
+        UIManager.Instance.UpdateLivesText(_lives);
+
+        if (_lives == 0)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+    }
+
+    public int Coins()
+    {
+        return _coins;
     }
 }

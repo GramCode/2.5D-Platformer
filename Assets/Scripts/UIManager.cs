@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-using TMPro;
-
 public class UIManager : MonoBehaviour
 {
     private static UIManager _instance;
@@ -20,7 +18,7 @@ public class UIManager : MonoBehaviour
     }
 
     [SerializeField]
-    private TMP_Text _coinsText;
+    private Text _coinsText, _livesText, _interactText;
 
     private void Awake()
     {
@@ -31,4 +29,15 @@ public class UIManager : MonoBehaviour
     {
         _coinsText.text = "Coins: " + coinsCount;
     }
+
+    public void UpdateLivesText(int lives)
+    {
+        _livesText.text = "Lives: " + lives;
+    }
+
+    public void DisplayInteractText(bool val)
+    {
+        _interactText.gameObject.SetActive(val);
+    }
+
 }
