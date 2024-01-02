@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     private float _gravity = 0.4f;
     [SerializeField]
     private float _jumpHeight = 14f;
+    [SerializeField]
+    private float _pushPower = 2.0f;
 
     private float _yVelocity;
     private bool _doubleJump = false;
@@ -38,6 +40,7 @@ public class Player : MonoBehaviour
 
     private void Movement()
     {
+
         float horizontal = Input.GetAxis("Horizontal");
         
         if (_controller.isGrounded)
@@ -52,7 +55,6 @@ public class Player : MonoBehaviour
             }
 
             _canWallJump = false;
-
         }
         else
         {
@@ -93,6 +95,24 @@ public class Player : MonoBehaviour
             _wallSurfaceNormal = hit.normal;
             _canWallJump = true;
         }
+
+        if (hit.transform.CompareTag("Box"))
+        {
+            Rigidbody rigi = hit.collider.attachedRigidbody;
+
+            if (rigi == null || rigi.isKinematic)
+                return;
+
+            if (hit.moveDirection.y < -0.3f)
+            {
+                return;
+            }
+
+            Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, 0);
+
+            rigi.velocity = pushDir * _pushPower;
+        }
+        
     }
 
     public void AddCoin()
